@@ -4,13 +4,17 @@ package com.site.SDE.RestController;
 import com.site.SDE.Entite.Admin;
 import com.site.SDE.Repository.AdminRepository;
 import com.site.SDE.Service.AdminService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -18,6 +22,9 @@ import java.util.Optional;
 @RequestMapping (value = "/admin")
 public class AdminRestController {
 
+
+    @Autowired
+    AdminService adminService;
     @Autowired
     private AdminRepository adminRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -25,8 +32,29 @@ public class AdminRestController {
     public AdminRestController(AdminRepository adminRepository) {this.adminRepository= adminRepository;}
 
 
-    @PostMapping(path = "registeradmin")
-    public ResponseEntity<?> addCandidat(@RequestBody Admin admin) {
+
+    @PostMapping(path = "login")
+    public ResponseEntity<Map<String, Object>> loginAdmin(@RequestBody Admin admin) {
+
+        HashMap<String, Object> response = new HashMap<>();
+
+        Admin userFromDB = adminRepository.findAdminByEmail(admin.getEmail());
+
+        if (userFromDB == null) {
+            response.put("message", "Admin not found !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } else {
+            String token = Jwts.builder()
+                    .claim("data", userFromDB)
+                    .signWith(SignatureAlgorithm.HS256, "SECRET")
+                    .compact();
+            response.put("token", token);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
+    @PostMapping(path = "register")
+    public ResponseEntity<?> addadmin(@RequestBody Admin admin) {
         if(adminRepository.existsByEmail(admin.getEmail()))
             return new ResponseEntity<Void>(HttpStatus.FOUND);
         admin.setMdp(this.bCryptPasswordEncoder.encode(admin.getMdp()));
@@ -34,8 +62,7 @@ public class AdminRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
-    @Autowired
-    AdminService adminService;
+
     @RequestMapping(method = RequestMethod.POST)
     public Admin ajouterAdmin(@RequestBody Admin admin){
         return adminService.ajouterAdmin(admin);
