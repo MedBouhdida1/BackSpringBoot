@@ -37,4 +37,16 @@ public class EntrepriseServiceImpl implements EntrepriseService{
     public Optional<Entreprise> getEntrepriseById(Long id) {
         return entrepriseRepository.findById(id);
     }
+
+    @Override
+    public Entreprise getEntrepriseByEmail(String email) {
+        return entrepriseRepository.findEntrepriseByEmail(email);
+    }
+
+    @Override
+    public List<Entreprise> getEntrepriseByEtat(int etat) {
+        return entrepriseRepository.findByEtat(etat);
+    }
+
+
 }

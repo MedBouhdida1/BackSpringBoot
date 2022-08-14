@@ -35,6 +35,11 @@ public class OffresServiceImpl implements OffresService{
     }
 
     @Override
+    public List<Offres> getOffreByEtat(int etat) {
+        return offresRepository.findByEtat(etat);
+    }
+
+    @Override
     public void supprimerOffre(Long id) {
         offresRepository.deleteById(id);
 

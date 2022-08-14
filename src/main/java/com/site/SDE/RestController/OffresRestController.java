@@ -43,4 +43,10 @@ public class OffresRestController {
     public List<Offres>lstOffres(){
         return offresService.lstOffres();
     }
+
+    @RequestMapping(value = "/etat/{etat}",method = RequestMethod.GET)
+    public List<Offres>getOffresByEtat(@PathVariable("etat")int etat){
+        List<Offres>offre=offresService.getOffreByEtat(etat);
+        return offre;
+    }
 }

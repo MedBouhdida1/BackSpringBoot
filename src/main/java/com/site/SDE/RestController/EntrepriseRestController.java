@@ -38,7 +38,7 @@ public class EntrepriseRestController {
         Entreprise userFromDB = entrepriseRepository.findEntrepriseByEmail(entreprise.getEmail());
 
         if (userFromDB == null) {
-            response.put("message", "Admin not found !");
+            response.put("message", "entreprise not found !");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } else {
             String token = Jwts.builder()
@@ -81,6 +81,12 @@ public class EntrepriseRestController {
     @RequestMapping(method = RequestMethod.GET)
     public List<Entreprise> lstEntreprise(){
         return entrepriseService.listEntreprise();
+    }
+
+    @RequestMapping(value = "/entreprise{etat}",method = RequestMethod.GET)
+    public List<Entreprise>getEntrepriseByEtat(@PathVariable("etat")int etat){
+        List<Entreprise>entreprises=entrepriseService.getEntrepriseByEtat(etat);
+        return entreprises;
     }
 
 

@@ -11,5 +11,7 @@ public interface OffresService {
     Offres modifierOffre(Offres offre);
     List<Offres>lstOffres();
     Optional<Offres>getOffreById(Long id);
+    List<Offres>getOffreByEtat(int etat);
+
     void supprimerOffre(Long id);
 }

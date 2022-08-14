@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 @Setter
 @NoArgsConstructor
 @Entity
@@ -20,6 +18,8 @@ public class Admin {
     private String prenom;
     private String mdp;
     private String email;
+    @Lob
+    private String photo;
 
     public Long getId() {
         return id;
@@ -39,5 +39,9 @@ public class Admin {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPhoto() {
+        return photo;
     }
 }
