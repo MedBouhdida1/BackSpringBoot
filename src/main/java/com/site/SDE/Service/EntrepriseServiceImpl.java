@@ -11,7 +11,6 @@ import java.util.Optional;
 @Service
 public class EntrepriseServiceImpl implements EntrepriseService{
     @Autowired
-
     EntrepriseRepository entrepriseRepository;
     @Override
     public Entreprise ajouterEntreprise(Entreprise entreprise) {

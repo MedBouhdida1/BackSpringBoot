@@ -3,11 +3,13 @@ package com.site.SDE.RestController;
 
 import com.site.SDE.Entite.Admin;
 import com.site.SDE.Entite.Formateur;
+import com.site.SDE.Entite.FormateurDto;
 import com.site.SDE.Repository.AdminRepository;
 import com.site.SDE.Repository.FormateurRepository;
 import com.site.SDE.Service.FormateurService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ public class FormateurRestController {
     @Autowired
     private FormateurRepository formateurRepository;
     @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
     public FormateurService formateurService;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     @Autowired
@@ -44,15 +48,23 @@ public class FormateurRestController {
         if (userFromDB == null) {
             response.put("message", "Admin not found !");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } else {
-            String token = Jwts.builder()
-                    .claim("data", userFromDB)
-                    .signWith(SignatureAlgorithm.HS256, "SECRET")
-                    .compact();
-            response.put("token", token);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
-    }
+        else {
+            Boolean compare = this.bCryptPasswordEncoder.matches(formateur.getMdp(), userFromDB.getMdp());
+            if (!compare) {
+                response.put("message", "Enseignant not found !");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            } else {
+                    String token = Jwts.builder()
+                            .claim("data", userFromDB)
+                            .signWith(SignatureAlgorithm.HS256, "SECRET")
+                            .compact();
+                    response.put("token", token);
+                    return ResponseEntity.status(HttpStatus.OK).body(response);
+                }
+            }
+        }
+
 
     @PostMapping(path = "register")
     public ResponseEntity<?> addformateur(@RequestBody Formateur formateur) {

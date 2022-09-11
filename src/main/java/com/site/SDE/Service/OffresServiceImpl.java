@@ -1,5 +1,6 @@
 package com.site.SDE.Service;
 
+import com.site.SDE.Entite.Entreprise;
 import com.site.SDE.Entite.Offres;
 import com.site.SDE.Repository.OffresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,13 @@ public class OffresServiceImpl implements OffresService{
     }
 
     @Override
-    public Optional<Offres> getOffreById(Long id) {
-        return offresRepository.findById(id);
+    public Offres getOffreById(Long id) {
+        Optional<Offres> offre = offresRepository.findById(id);
+
+        if(offre.isPresent()) {
+            return offre.get();
+        }
+        return null;
     }
 
     @Override

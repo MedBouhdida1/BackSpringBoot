@@ -6,6 +6,7 @@ import com.site.SDE.Repository.EntrepriseRepository;
 import com.site.SDE.Service.EntrepriseService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ public class EntrepriseRestController {
 
     @Autowired
     EntrepriseService entrepriseService;
+    @Autowired
+    private ModelMapper modelMapper;
+
     private EntrepriseRepository entrepriseRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     @Autowired
@@ -40,13 +44,27 @@ public class EntrepriseRestController {
         if (userFromDB == null) {
             response.put("message", "entreprise not found !");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } else {
-            String token = Jwts.builder()
-                    .claim("data", userFromDB)
-                    .signWith(SignatureAlgorithm.HS256, "SECRET")
-                    .compact();
-            response.put("token", token);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        else {
+
+            Boolean compare = this.bCryptPasswordEncoder.matches(entreprise.getMdp(), userFromDB.getMdp());
+
+            if (!compare) {
+                response.put("message", "Enseignant not found !");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            } else {
+                if (userFromDB.getEtat()==0) {
+                    response.put("message", "Enseignant not allowed !");
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+                } else {
+                    String token = Jwts.builder()
+                            .claim("data", userFromDB)
+                            .signWith(SignatureAlgorithm.HS256, "SECRET")
+                            .compact();
+                    response.put("token", token);
+                    return ResponseEntity.status(HttpStatus.OK).body(response);
+                }
+            }
         }
     }
 

@@ -11,7 +11,7 @@ public interface EntrepriseService {
     Entreprise modifierEntreprise(Entreprise entreprise);
     List<Entreprise>listEntreprise();
     void supprimerEntreprise(Long id);
-    Optional<Entreprise>getEntrepriseById(Long id);
+    Optional<Entreprise> getEntrepriseById(Long id);
     Entreprise getEntrepriseByEmail(String email);
     List<Entreprise>getEntrepriseByEtat(int etat);
 

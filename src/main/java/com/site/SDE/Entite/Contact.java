@@ -19,6 +19,7 @@ public class Contact {
     private String email;
     private String sujet;
     private String msg;
+    private String date;
 
 
 }
