@@ -10,8 +10,6 @@ public class SdeApplication {
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
-
-
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(SdeApplication.class, args);

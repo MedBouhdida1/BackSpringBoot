@@ -31,7 +31,6 @@ public class Entreprise {
     private String date;
     private String numeroTel;
     @OneToMany(mappedBy = "entreprise")
-    @JsonProperty
 
     private List<Offres> offre;
 

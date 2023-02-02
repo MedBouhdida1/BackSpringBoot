@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class OffresDto    {
+public class OffresDto implements Serializable   {
     private  Long id;
     private  String titre;
     private  String salaire;
@@ -25,6 +25,4 @@ public class OffresDto    {
     private  String experience;
     private  Entreprise entreprise;
     private List<Formateur> formateur;
-
-
 }

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class FormateurDto   {
+public class FormateurDto implements Serializable   {
     private  Long id;
     private  String nom;
     private  String prenom;

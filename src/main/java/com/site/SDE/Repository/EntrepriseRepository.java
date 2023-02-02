@@ -15,6 +15,7 @@ public interface EntrepriseRepository extends JpaRepository<Entreprise,Long> {
     boolean existsByEmail(String email);
     Entreprise findEntrepriseByEmail(String email);
     List<Entreprise> findByEtat(int etat);
+    Entreprise findEntrepriseByOffreId(long id);
 
 
 

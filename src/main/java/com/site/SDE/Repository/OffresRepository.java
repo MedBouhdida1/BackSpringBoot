@@ -11,4 +11,8 @@ import java.util.Optional;
 @Repository
 public interface OffresRepository extends JpaRepository<Offres,Long> {
     List<Offres> findByEtat(int etat);
+    List<Offres> findOffresByFormateurId(Long id);
+    List<Offres> findOffresByEntrepriseId(Long id);
+    List<Offres> findOffresByEtatAndEntrepriseId(int etat,Long id );
+
 }

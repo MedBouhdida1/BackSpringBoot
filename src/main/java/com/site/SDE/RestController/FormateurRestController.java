@@ -1,9 +1,7 @@
 package com.site.SDE.RestController;
 
 
-import com.site.SDE.Entite.Admin;
-import com.site.SDE.Entite.Formateur;
-import com.site.SDE.Entite.FormateurDto;
+import com.site.SDE.Entite.*;
 import com.site.SDE.Repository.AdminRepository;
 import com.site.SDE.Repository.FormateurRepository;
 import com.site.SDE.Service.FormateurService;
@@ -21,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -100,8 +99,15 @@ public class FormateurRestController {
 
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public Optional<Formateur> getFormateurById(@PathVariable("id")Long id){
-        Optional<Formateur>formateur=formateurService.getFormateurById(id);
+        Optional<Formateur>formateur=formateurService.getFormateurById(id); 
         return formateur;
+    }
+
+    @GetMapping("/formateursbyoffreid/{offreid}")
+    public ResponseEntity<List<Formateur>> getAllformateurByOffreId(@PathVariable(value = "offreid") Long offreId) {
+
+        List<Formateur> formateurs = formateurRepository.findFormateursByOffreId(offreId);
+        return new ResponseEntity<>(formateurs, HttpStatus.OK);
     }
 
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -33,13 +34,12 @@ public class Offres {
     private String description;
     private String requirements;
     private String experience;
-
     @ManyToOne
     @JoinColumn(name = "entreprise_id")
     private Entreprise entreprise;
 
     //
-    @ManyToMany(mappedBy = "offre",cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "offre")
     @JsonIgnore
     private List<Formateur> formateur;
     //
@@ -108,5 +108,16 @@ public class Offres {
     public List<Formateur> getFormateur() {
         return formateur;
     }
-    //
+
+
+
+    public void removeFormateur(Formateur formateur) {
+        this.getFormateur().remove(formateur);
+        formateur.getOffre().remove(this);
+    }
+    public void removeFormateurs() {
+        for (Formateur formateur : new HashSet<>(formateur)) {
+            removeFormateur(formateur);
+        }
+    }
 }

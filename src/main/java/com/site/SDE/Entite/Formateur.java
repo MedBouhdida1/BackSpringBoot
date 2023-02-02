@@ -29,7 +29,7 @@ public class Formateur {
     @Lob
     private String cv;
     //
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany
     @JoinTable(name = "Postulation",
     joinColumns = {@JoinColumn(name = "formateur_id")},
     inverseJoinColumns = {@JoinColumn(name = "offre_id")})

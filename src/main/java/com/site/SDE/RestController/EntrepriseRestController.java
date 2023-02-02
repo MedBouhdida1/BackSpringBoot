@@ -101,6 +101,13 @@ public class EntrepriseRestController {
         return entrepriseService.listEntreprise();
     }
 
+    @RequestMapping(value = "/entreprisebyoffre/{id}",method = RequestMethod.GET)
+    public Entreprise getEntrepriseByoffre(@PathVariable("id")long id){
+        Entreprise entreprises=entrepriseRepository.findEntrepriseByOffreId(id);
+        return entreprises;
+    }
+
+
     @RequestMapping(value = "/entreprise{etat}",method = RequestMethod.GET)
     public List<Entreprise>getEntrepriseByEtat(@PathVariable("etat")int etat){
         List<Entreprise>entreprises=entrepriseService.getEntrepriseByEtat(etat);
